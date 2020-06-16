@@ -43,7 +43,7 @@ namespace Dota2Tracker.Controllers
 
                     for(int i = 0; i < list; i++)
                     {
-                        matchList.Add(matches.RootElement[i].ToString());
+                        matchList.Add(matches.RootElement[i].GetProperty("match_id").ToString());
                     }
                 
                     return matchList;
