@@ -23,15 +23,15 @@ namespace Dota2Tracker.Controllers
         }
 
         [HttpGet]
-        public async Task<List<string>> getMatches(string playerID)
+        public async Task<List<playerMatch>> getMatches(string playerID)
         {
             var matches = await playerMatches(playerID);
             return matches;
         }
 
-        public async Task<List<string>> playerMatches(string playerID)
+        public async Task<List<playerMatch>> playerMatches(string playerID)
         {
-            List<string> matchList = new List<string>();
+            List<playerMatch> matchList = new List<playerMatch>();
 
             using (var httpClient = new HttpClient())
             {
@@ -41,15 +41,21 @@ namespace Dota2Tracker.Controllers
                     var matches = JsonDocument.Parse(summary);
                     var list = matches.RootElement.GetArrayLength();
 
-                    for(int i = 0; i < list; i++)
+                    for (int i = 0; i < list; i++)
                     {
-                        matchList.Add(matches.RootElement[i].GetProperty("match_id").ToString());
+                        playerMatch thisMatch = new playerMatch();
+                        var names = matches.RootElement[i].GetProperty("match_id");
+                        thisMatch.heroID = matches.RootElement[i].GetProperty("hero_id").ToString();
+                        thisMatch.matchID = matches.RootElement[i].GetProperty("match_id").ToString();
+                        thisMatch.matchKDA = matches.RootElement[i].GetProperty("kills").ToString();
+                        matchList.Add(thisMatch);
                     }
-                
-                    return matchList;
                 }
+
+                return matchList;
             }
         }
+
 
         public async Task<IActionResult> Index()
         {

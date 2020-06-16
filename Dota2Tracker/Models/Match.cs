@@ -5,13 +5,18 @@ using System.Threading.Tasks;
 
 namespace Dota2Tracker.Models
 {
-    public class Match
+    public class playerMatch
     {
-        private int matchID { get; set; }
-        private int heroID { get; set; }
-        private int[] matchKDA { get; set; }
+        public string matchID { get; set; }
+        public string heroID { get; set; }
+        public string matchKDA { get; set; }
 
-        public Match(int MatchID, int HeroID, int[] MatchKDA)
+        public playerMatch()
+        {
+
+        }
+
+        public playerMatch(string MatchID, string HeroID, string MatchKDA)
         {
             matchID = MatchID;
             heroID = HeroID;
