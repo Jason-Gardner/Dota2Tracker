@@ -61,7 +61,39 @@ namespace Dota2Tracker.Controllers
         {
             string playerID = "248586332";
             var matchList = await getMatches(playerID);
+            List<Hero> heroNames = await getHeroName();
+            foreach (playerMatch inst in matchList)
+            {
+                foreach(Hero names in heroNames)
+                {
+                    if(names.heroID == inst.heroID)
+                    {
+                        inst.heroID = names.heroName;
+                    }
+                }
+            }
             return View("Index", matchList);
+        }
+
+        public async Task<List<Hero>> getHeroName()
+        {
+            List<Hero> heroNames = new List<Hero>();
+
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync("https://api.opendota.com/api/heroes"))
+                {
+                    var stringHero = await response.Content.ReadAsStringAsync();
+                    var heroList = JsonDocument.Parse(stringHero);
+
+                    for (int i = 0; i < heroList.RootElement.GetArrayLength(); i++)
+                    {
+                        heroNames.Add(new Hero(heroList.RootElement[i].GetProperty("id").ToString(),heroList.RootElement[i].GetProperty("localized_name").ToString()));
+                    }
+                }
+            }
+
+            return heroNames;
         }
 
         public IActionResult Privacy()
