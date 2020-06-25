@@ -2,25 +2,44 @@
     ViewData["Title"] = "Home Page";
 }
 
-@model List<playerMatch>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 
-<div class="text-center">
-    <table>
+<div class="text-center" ng-app="list" ng-controller="matchList">
+    <table width="100%">
         <thead>
             <tr>
                 <th scope="col">Match ID</th>
                 <th scope="col">Hero ID</th>
-                <th scope="col">KDA</th>
+                <th scope="col">Kills</th>
+                <th scope="col">Deaths</th>
+                <th scope="col">Assists</th>
+                <th scope="col">Last Hits</th>
+                <th scope="col">XPM</th>
+                <th scope="col">GPM</th>
             </tr>
         </thead>
-
-        @for (int i = 0; i < Model.Count; i++)
-        {
-            <tr>
-                <td>@Model[i].matchID</td>
-                <td>@Model[i].heroID</td>
-                <td>@Model[i].matchKDA</td>
+        <tbody>
+            <tr ng-repeat="x in games">
+                <td>{{x.match_id}}</td>
+                <td>{{x.hero_id}}</td>
+                <td>{{x.kills}}</td>
+                <td>{{x.deaths}}</td>
+                <td>{{x.assists}}</td>
+                <td>{{x.last_hits}}</td>
+                <td>{{x.xp_per_min}}</td>
+                <td>{{x.gold_per_min}}</td>
             </tr>
-        }
+        </tbody>
+
     </table>
 </div>
+
+<script>
+    var app = angular.module("list", []);
+    app.controller("matchList", function ($scope, $http) {
+        $scope.games = [];
+        $http.get("https://api.opendota.com/api/players/248586332/recentMatches").then(function (response) {
+            $scope.games = response.data;
+        });
+    });
+</script>

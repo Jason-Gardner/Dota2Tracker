@@ -56,23 +56,29 @@ namespace Dota2Tracker.Controllers
             }
         }
 
-
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public async Task<JsonResult> GetList()
         {
             string playerID = "248586332";
             var matchList = await getMatches(playerID);
             List<Hero> heroNames = await getHeroName();
             foreach (playerMatch inst in matchList)
             {
-                foreach(Hero names in heroNames)
+                foreach (Hero names in heroNames)
                 {
-                    if(names.heroID == inst.heroID)
+                    if (names.heroID == inst.heroID)
                     {
                         inst.heroID = names.heroName;
                     }
                 }
             }
-            return View("Index", matchList);
+
+            return Json(matchList);
+        }
+
+        public IActionResult Index()
+        {
+            return View();
         }
 
         public async Task<List<Hero>> getHeroName()
