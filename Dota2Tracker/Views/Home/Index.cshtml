@@ -3,8 +3,21 @@
 }
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-
 <div class="text-center" ng-app="list" ng-controller="matchList">
+    <h3>Recent Matches</h3>
+    <select style="margin-bottom: 10px" ng-model="yourGame">
+        <option ng-repeat="x in games" ng-value="{{x}}">{{x.match_id}}</option>
+    </select>
+    <p>You selected {{yourGame.match_id}}</p>
+    <table align="center">
+        <tr><td><b>Hero ID: </b></td><td ng-bind="yourGame.hero_id"></td></tr>
+        <tr><td><b>Kills: </b></td><td ng-bind="yourGame.kills"></td></tr>
+        <tr><td><b>Deaths: </b></td><td ng-bind="yourGame.deaths"></td></tr>
+        <tr><td><b>Assists: </b></td><td ng-bind="yourGame.assists"></td></tr>
+        <tr><td><b>Last Hits: </b></td><td ng-bind="yourGame.last_hits"></td></tr>
+        <tr><td><b>XPM: </b></td><td ng-bind="yourGame.xp_per_min"></td></tr>
+        <tr><td><b>GPM: </b></td><td ng-bind="yourGame.gold_per_min"></td></tr>
+    </table><br />
     <table width="100%">
         <thead>
             <tr>
@@ -30,7 +43,6 @@
                 <td>{{x.gold_per_min}}</td>
             </tr>
         </tbody>
-
     </table>
 </div>
 
